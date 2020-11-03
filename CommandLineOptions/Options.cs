@@ -31,5 +31,12 @@ namespace FilesFileServer.CommandLineOptions
         /// </summary>
         [Option('r', "rootPath", Required = false, HelpText = "Specify the root path of of the file share. If rootPath is not defined, the current working directory is used.")]
         public string RootPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the hosting scheme to use.
+        /// </summary>
+        /// <value></value>
+        [Option('s', "scheme", Required = false, HelpText = "Specify the scheme to use, either http or https", Default = "http")]
+        public string Scheme { get; set; }
     }
 }

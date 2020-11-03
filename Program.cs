@@ -115,6 +115,7 @@ namespace GilesFileServer
             {
                 Port = options.Port,
                 Host = options.Url,
+                Scheme = options.Scheme
             };
 
             return Host.CreateDefaultBuilder(args)
