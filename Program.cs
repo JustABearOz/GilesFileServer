@@ -1,18 +1,22 @@
-//----------------------------------------------------------------------------
-//
-//
-//----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="n/a">
+//  Copyright (c) Eddie de Bear. 2020, under MIT Licence.
+//  See LICENCE file for usage rights.
+// </copyright>
+// ------------------------------------------------------------------------------------------
 namespace GilesFileServer
 {
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Xml;
     using CommandLine;
     using CommandLine.Text;
+    using Crayon;
     using FilesFileServer.CommandLineOptions;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
 
     /// <summary>
     /// Main application / entry point.
@@ -22,18 +26,19 @@ namespace GilesFileServer
         /// <summary>
         /// Main Entry point.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">Commaand line arguments.</param>
         public static void Main(string[] args)
         {
-            var parser = new Parser(settings =>
+            using (var parser = new Parser(settings =>
             {
                 settings.AutoHelp = false;
-            });
+            }))
+            {
+                var result = parser.ParseArguments<Options>(args);
 
-            var result = parser.ParseArguments<Options>(args);
-
-            result.WithParsed(o => OnParsed(o, args))
-                .WithNotParsed(errors => OnNotParsed(result, errors));
+                result.WithParsed(o => OnParsed(o, args))
+                    .WithNotParsed(errors => OnNotParsed(result, errors));
+            }
         }
 
         /// <summary>
@@ -47,6 +52,8 @@ namespace GilesFileServer
             if (errors.IsVersion())
             {
                 Console.WriteLine(HelpText.AutoBuild(result));
+
+                return;
             }
             else if (errors.IsHelp())
             {
@@ -54,25 +61,23 @@ namespace GilesFileServer
             }
             else
             {
-                var consoleColour = Console.ForegroundColor;
-
-                Console.ForegroundColor = ConsoleColor.Red;
-
                 if (errors.ElementAt(0) is UnknownOptionError unknownOptionError)
                 {
-                    Console.Error.WriteLine($"\nOption: {unknownOptionError.Token} is unknown\n");
+                    Console.Error.WriteLine(Output.Red($"\nOption: {unknownOptionError.Token} is unknown\n"));
                 }
                 else
                 {
-                    Console.Error.WriteLine(errors.ElementAt(0).Tag);
+                    Console.Error.WriteLine(Output.Red(errors.ElementAt(0).Tag.ToString()));
                 }
-
-                Console.ForegroundColor = consoleColour;
 
                 RenderHelp(result);
             }
         }
 
+        /// <summary>
+        /// Renders the help menu to the console.
+        /// </summary>
+        /// <param name="result">Result of the command line argument parsing operaiton.</param>
         private static void RenderHelp(ParserResult<Options> result)
         {
             var helpText = CommandLine.Text.HelpText.AutoBuild(
@@ -80,7 +85,7 @@ namespace GilesFileServer
                 builder =>
                     {
                         builder.AdditionalNewLineAfterOption = false;
-                        builder.Heading = "GilesFileServer";
+                        builder.Heading = "Giles File Server\n==================";
                         return builder;
                     },
                 e => e);
@@ -88,6 +93,11 @@ namespace GilesFileServer
             Console.WriteLine(helpText);
         }
 
+        /// <summary>
+        /// Callback for passed command line parameter. Launches site.
+        /// </summary>
+        /// <param name="options">Parsed command line parameters.</param>
+        /// <param name="args">Raw command line args.</param>
         private static void OnParsed(Options options, string[] args)
         {
             CreateHostBuilder(args, options).Build().Run();

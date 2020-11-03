@@ -1,0 +1,8 @@
+<Project>
+    <PropertyGroup>
+        <CodeAnalysisRuleset>$(SolutionDir)StyleCop.ruleset</CodeAnalysisRuleset>
+    </PropertyGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="$(SolutionDir)stylecop.json" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+{
+    "schema": "https:://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+    "settings": {
+        "documentationRules": {
+            "companyName": "{n/a}",
+            "copyrightText": "Copyright (c) 2020, under MIT Licence.",
+            "xmlHeader": true
+        }
+    }
+}

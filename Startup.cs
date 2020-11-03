@@ -1,3 +1,9 @@
+// ------------------------------------------------------------------------------------------
+// <copyright file="Startup.cs" company="n/a">
+//  Copyright (c) Eddie de Bear 2020, under MIT Licence.
+//  See LICENCE file for usage rights.
+// </copyright>
+// ------------------------------------------------------------------------------------------
 namespace GilesFileServer
 {
     using FilesFileServer.CommandLineOptions;
