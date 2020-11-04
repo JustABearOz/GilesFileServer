@@ -1,2 +1,3 @@
 # GilesFileServer
-Simple console based file server written in .net core
+Simple console based, cross platform file server written in .net core.
+

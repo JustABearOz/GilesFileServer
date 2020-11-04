@@ -35,7 +35,7 @@ namespace FilesFileServer.CommandLineOptions
         /// <summary>
         /// Gets or sets the hosting scheme to use.
         /// </summary>
-        /// <value></value>
+        /// <value>The scheme to use.</value>
         [Option('s', "scheme", Required = false, HelpText = "Specify the scheme to use, either http or https", Default = "http")]
         public string Scheme { get; set; }
     }

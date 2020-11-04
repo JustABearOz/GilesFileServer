@@ -29,16 +29,14 @@ namespace GilesFileServer
         /// <param name="args">Commaand line arguments.</param>
         public static void Main(string[] args)
         {
-            using (var parser = new Parser(settings =>
+            using var parser = new Parser(settings =>
             {
                 settings.AutoHelp = false;
-            }))
-            {
-                var result = parser.ParseArguments<Options>(args);
+            });
+            var result = parser.ParseArguments<Options>(args);
 
-                result.WithParsed(o => OnParsed(o, args))
-                    .WithNotParsed(errors => OnNotParsed(result, errors));
-            }
+            result.WithParsed(o => OnParsed(o, args))
+                .WithNotParsed(errors => OnNotParsed(result, errors));
         }
 
         /// <summary>
@@ -115,7 +113,7 @@ namespace GilesFileServer
             {
                 Port = options.Port,
                 Host = options.Url,
-                Scheme = options.Scheme
+                Scheme = options.Scheme,
             };
 
             return Host.CreateDefaultBuilder(args)
