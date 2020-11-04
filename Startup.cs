@@ -32,7 +32,8 @@ namespace GilesFileServer
         /// <param name="app">The application instance to configure.</param>
         /// <param name="env">The hosting environment.</param>
         /// <param name="options">Command line options.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Options options)
+        /// <param name="appLifetime">Lifetime object for the application.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Options options, IHostApplicationLifetime appLifetime)
         {
             // Allow error page.
             if (env.IsDevelopment())
@@ -53,6 +54,11 @@ namespace GilesFileServer
             app.UseDirectoryBrowser(new DirectoryBrowserOptions()
             {
                 FileProvider = new PhysicalFileProvider(rootPath),
+            });
+
+            appLifetime.ApplicationStopped.Register(() =>
+            {
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
             });
         }
 
